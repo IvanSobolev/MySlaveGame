@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using MySlaveApi.Model;
 
-namespace MySlaveApi.Model;
+namespace MySlaveApi.Data;
 
 public class DataContext : DbContext
 {

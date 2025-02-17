@@ -1,8 +1,8 @@
 namespace MySlaveApi.Model;
 
-public class User
+public class User (long id)
 {
-    public long Id { get; set; }
+    public long Id { get; set; } = id;
     public string UserName { get; set; }
     public long? OwnerId { get; set; }
     public User Owner { get; set; }
@@ -10,4 +10,7 @@ public class User
     
     public int Level { get; set; }
     public int ResoldCount { get; set; }
+    public int Balance { get; set; }
+    public int MaxStorageLevel { get; set; }
+    public long LastTakeStamp { get; set; }
 }
