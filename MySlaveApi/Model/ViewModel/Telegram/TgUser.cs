@@ -18,4 +18,10 @@ public class TgUser
 
     [JsonPropertyName("language_code")]
     public string? LanguageCode { get; set; }
+    
+    [JsonPropertyName("is_premium")]
+    public bool? IsPremium { get; set; }
+    
+    [JsonPropertyName("allows_write_to_pm")]
+    public bool? AllowWriteToPm { get; set; }
 }

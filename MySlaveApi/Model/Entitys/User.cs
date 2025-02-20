@@ -3,7 +3,7 @@ namespace MySlaveApi.Model;
 public class User (long id)
 {
     public long Id { get; set; } = id;
-    public string UserName { get; set; }
+    public string Username { get; set; }
     public long? OwnerId { get; set; }
     public User Owner { get; set; }
     public ICollection<User> SubUsers { get; set; } = new List<User>();
