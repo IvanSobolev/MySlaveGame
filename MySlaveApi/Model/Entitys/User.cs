@@ -4,7 +4,7 @@ public class User (long id)
 {
     public long Id { get; set; } = id;
     public string Username { get; set; }
-    public long? OwnerId { get; set; }
+    public long OwnerId { get; set; }
     public User Owner { get; set; }
     public ICollection<User> SubUsers { get; set; } = new List<User>();
     
@@ -12,5 +12,5 @@ public class User (long id)
     public int ResoldCount { get; set; }
     public int Balance { get; set; }
     public int MaxStorageLevel { get; set; }
-    public long LastTakeStamp { get; set; }
+    public DateTime LastTakeStamp { get; set; }
 }

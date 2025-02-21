@@ -14,7 +14,7 @@ public class TgUser
     public string? LastName { get; set; }
 
     [JsonPropertyName("username")]
-    public string? Username { get; set; }
+    public string Username { get; set; }
 
     [JsonPropertyName("language_code")]
     public string? LanguageCode { get; set; }

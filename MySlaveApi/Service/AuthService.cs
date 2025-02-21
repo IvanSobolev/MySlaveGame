@@ -7,23 +7,36 @@ namespace MySlaveApi.Service;
 
 public class AuthService(ITokenGeneratorService tokenGeneratorService, ITokenRepository tokenRepository, IUserRepository userRepository) : IAuthService
 {
-    private ITokenGeneratorService _tokenGeneratorService = tokenGeneratorService;
-    private ITokenRepository _tokenRepository = tokenRepository;
-    private IUserRepository _userRepository = userRepository;
-    private TelegramAuthService _telegramAuthService = new TelegramAuthService("");
+    private readonly ITokenGeneratorService _tokenGeneratorService = tokenGeneratorService;
+    private readonly ITokenRepository _tokenRepository = tokenRepository;
+    private readonly IUserRepository _userRepository = userRepository;
+    private readonly TelegramAuthService _telegramAuthService = new TelegramAuthService("");
     
     public async Task<TokenOutputDTO?> Auth(string initData)
     {
-        TgUser loginUser = _telegramAuthService.ExtractUserData(initData);
         if (!await _telegramAuthService.ValidateTelegramData(initData))
         {
             return null;
         }
         
+        TgUser loginUser = _telegramAuthService.ExtractUserData(initData);
+        
         User user = await _userRepository.GetUserAsync(loginUser.Id);
         if (user.Id == -1)
         {
-            // TO DO REGISTER LOGIC
+            user = new User (loginUser.Id)
+            {
+                Username = loginUser.Username,
+                OwnerId = -1,
+                Owner = new User(-1),
+                Level = 1,
+                ResoldCount = 0,
+                Balance = 100,
+                MaxStorageLevel = 1,
+                LastTakeStamp = DateTime.UtcNow
+                
+            };
+            await _userRepository.AddUserAsync(user);
         }
         
         await _tokenRepository.DeleteByTgidAsync(user.Id);
@@ -35,16 +48,34 @@ public class AuthService(ITokenGeneratorService tokenGeneratorService, ITokenRep
         {
             TgId = user.Id,
             Token = refreshToken,
-            Expires = DateTime.UtcNow.AddDays(7)
+            Expires = DateTime.UtcNow.AddHours(0.5)
         });
 
         return new TokenOutputDTO(accessToken, refreshToken);
     }
 
 
-    public Task<TokenOutputDTO?> RefreshToken(string refreshToken)
+    public async Task<TokenOutputDTO?> RefreshToken(string token)
     {
-        // TO DO REFRESH TOKEN LOGIC
-        throw new NotImplementedException();
+        var refreshToken = await _tokenRepository.GetByTokenAsync(token);
+
+        if (refreshToken == null || refreshToken.Expires < DateTime.UtcNow)
+        {
+            return null;
+        }
+
+        _ = _tokenRepository.DeleteByTokenAsync(token);
+
+        var newAccessToken = _tokenGeneratorService.GenerateAccessToken(refreshToken.TgId.ToString());
+        var newRefreshToken = _tokenGeneratorService.GenerateRefreshToken(refreshToken.TgId.ToString());
+
+        _ = _tokenRepository.AddAsync(new RefreshToken
+        {
+            Token = newRefreshToken,
+            TgId = refreshToken.TgId,
+            Expires = DateTime.UtcNow.AddDays(7)
+        });
+
+        return new TokenOutputDTO(newAccessToken, newRefreshToken);
     }
 }
