@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySlaveApi", "MySlaveApi\MySlaveApi.csproj", "{A65DB67B-FED1-41E4-9BF7-98ADFCAED10E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySlaveTelegramBot", "MySlaveTelegramBot\MySlaveTelegramBot.csproj", "{71278E40-D66E-4D7A-BD34-EE00090E4AA1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{A65DB67B-FED1-41E4-9BF7-98ADFCAED10E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A65DB67B-FED1-41E4-9BF7-98ADFCAED10E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A65DB67B-FED1-41E4-9BF7-98ADFCAED10E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71278E40-D66E-4D7A-BD34-EE00090E4AA1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71278E40-D66E-4D7A-BD34-EE00090E4AA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71278E40-D66E-4D7A-BD34-EE00090E4AA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71278E40-D66E-4D7A-BD34-EE00090E4AA1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
