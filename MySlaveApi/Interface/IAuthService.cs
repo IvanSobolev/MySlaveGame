@@ -5,6 +5,6 @@ namespace MySlaveApi.Interface;
 
 public interface IAuthService
 {
-    public Task<TokenOutputDTO?> Auth(string initData);
+    public Task<TokenOutputDTO?> Auth(TgAppData data);
     public Task<TokenOutputDTO?> RefreshToken(string refreshToken);
 }

@@ -19,9 +19,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasOne(u => u.Owner)
             .WithMany(u => u.SubUsers)
             .HasForeignKey(u => u.OwnerId)
-            .OnDelete(DeleteBehavior.Restrict);
+            .OnDelete(DeleteBehavior.Restrict)
+            .IsRequired(false);
 
-        builder.HasIndex(u => u.Id).IsUnique();
-        builder.HasIndex(u => u.OwnerId);
+        builder.HasMany(u => u.RefreshTokens)
+            .WithOne(rt => rt.User)
+            .HasForeignKey(rt => rt.TgId)
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }

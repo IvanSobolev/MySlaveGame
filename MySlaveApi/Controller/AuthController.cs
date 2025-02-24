@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySlaveApi.Interface;
+using MySlaveApi.Model.ViewModel.Telegram;
 
 namespace MySlaveApi.Controller;
 
@@ -10,10 +11,10 @@ public class AuthController(IAuthService authService) : ControllerBase
 {
     private IAuthService _authService = authService;
 
-    [HttpGet("auth/{tgString}")]
-    public async Task<IActionResult> TelegrammAuth(string tgString)
+    [HttpPost("auth/")]
+    public async Task<IActionResult> TelegrammAuth([FromBody]TgAppData data)
     { 
-        var tokens = await _authService.Auth(tgString);
+        var tokens = await _authService.Auth(data);
         if (tokens == null)
         {
             return Unauthorized("telegramm string is not correct");

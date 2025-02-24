@@ -7,7 +7,6 @@ using MySlaveApi.Interface;
 using MySlaveApi.Model;
 using MySlaveApi.Repository;
 using MySlaveApi.Service;
-using TokenContext = MySlaveApi.Data.TokenContext;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,17 +15,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var optionUserBuilder = new DbContextOptionsBuilder<DataContext>();
-optionUserBuilder.UseSqlite(builder.Configuration.GetConnectionString("SQLiteUserData"));
+optionUserBuilder.UseSqlite(builder.Configuration.GetConnectionString("SQLiteData"));
 var dataContext = new DataContext(optionUserBuilder.Options);
-
-var optionTokenBuilder = new DbContextOptionsBuilder<TokenContext>();
-optionTokenBuilder.UseSqlite(builder.Configuration.GetConnectionString("SQLiteTokenData"));
-var tokenContext = new TokenContext(optionTokenBuilder.Options);
 
 builder.Services.AddSingleton<IAuthService>(provider =>
 {
     dataContext.Database.EnsureCreated();
-    ITokenRepository tokenRepository = new TokenRepository(tokenContext);
+    ITokenRepository tokenRepository = new TokenRepository(dataContext);
     IUserRepository userRepository = new UserRepository(dataContext);
     return new AuthService(new TokenGenerator(), tokenRepository, userRepository);
 });

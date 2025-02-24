@@ -10,25 +10,23 @@ public class AuthService(ITokenGeneratorService tokenGeneratorService, ITokenRep
     private readonly ITokenGeneratorService _tokenGeneratorService = tokenGeneratorService;
     private readonly ITokenRepository _tokenRepository = tokenRepository;
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly TelegramAuthService _telegramAuthService = new TelegramAuthService("");
+    private readonly TelegramAuthService _telegramAuthService = new TelegramAuthService("../tg.token");
     
-    public async Task<TokenOutputDTO?> Auth(string initData)
+    public async Task<TokenOutputDTO?> Auth(TgAppData data)
     {
-        if (!await _telegramAuthService.ValidateTelegramData(initData))
+        if (!await _telegramAuthService.ValidateTelegramData(data))
         {
             return null;
         }
         
-        TgUser loginUser = _telegramAuthService.ExtractUserData(initData);
-        
-        User user = await _userRepository.GetUserAsync(loginUser.Id);
+        User user = await _userRepository.GetUserAsync(data.User.Id);
         if (user.Id == -1)
         {
-            user = new User (loginUser.Id)
+            user = new User (data.User.Id)
             {
-                Username = loginUser.Username,
-                OwnerId = -1,
-                Owner = new User(-1),
+                Username = data.User.Username,
+                OwnerId = null,
+                Owner = null,
                 Level = 1,
                 ResoldCount = 0,
                 Balance = 100,
@@ -36,6 +34,7 @@ public class AuthService(ITokenGeneratorService tokenGeneratorService, ITokenRep
                 LastTakeStamp = DateTime.UtcNow
                 
             };
+            Console.WriteLine(user.Username);
             await _userRepository.AddUserAsync(user);
         }
         

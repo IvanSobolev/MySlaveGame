@@ -5,9 +5,9 @@ using MySlaveApi.Model;
 
 namespace MySlaveApi.Repository;
 
-public class TokenRepository (TokenContext tokenContext): ITokenRepository
+public class TokenRepository (DataContext tokenContext): ITokenRepository
 {
-    private readonly TokenContext _tokenContext = tokenContext;
+    private readonly DataContext _tokenContext = tokenContext;
     
     public async Task<RefreshToken?> GetByTokenAsync(string token)
     {
