@@ -7,6 +7,7 @@ using MySlaveApi.Interface;
 using MySlaveApi.Model;
 using MySlaveApi.Repository;
 using MySlaveApi.Service;
+using MySlaveApi.Service.Game;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,14 @@ builder.Services.AddSingleton<IAuthService>(provider =>
     IUserRepository userRepository = new UserRepository(dataContext);
     return new AuthService(new TokenGenerator(), tokenRepository, userRepository);
 });
+
+builder.Services.AddSingleton<IGameManager>(provider =>
+{
+    dataContext.Database.EnsureCreated();
+    IUserRepository userRepository = new UserRepository(dataContext);
+    return new GameManager(userRepository);
+});
+
 
 builder.Services.AddSwaggerGen(c =>
 {

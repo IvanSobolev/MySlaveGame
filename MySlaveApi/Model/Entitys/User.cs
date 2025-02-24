@@ -10,7 +10,7 @@ public class User (long id)
     
     public int Level { get; set; }
     public int ResoldCount { get; set; }
-    public int Balance { get; set; }
+    public double Balance { get; set; }
     public int MaxStorageLevel { get; set; }
     public DateTime LastTakeStamp { get; set; }
     

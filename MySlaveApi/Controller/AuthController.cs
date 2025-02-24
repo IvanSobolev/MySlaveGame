@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySlaveApi.Interface;
@@ -9,7 +10,7 @@ namespace MySlaveApi.Controller;
 [Route("[controller]")]
 public class AuthController(IAuthService authService) : ControllerBase
 {
-    private IAuthService _authService = authService;
+    private readonly IAuthService _authService = authService;
 
     [HttpPost("auth/")]
     public async Task<IActionResult> TelegrammAuth([FromBody]TgAppData data)
@@ -39,6 +40,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     [HttpGet("authTest")]
     public IActionResult AuthTest()
     {
-        return Ok("ITS WORK");
+        var id = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        return Ok(id + "  user");
     }
 }
